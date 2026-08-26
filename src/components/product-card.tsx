@@ -20,7 +20,7 @@ export default function ProductCard({
     product.compare_at_price != null && Number(product.compare_at_price) > Number(product.price);
   return (
     <Link href={`/${locale}/products/${product.slug}`} className="card group overflow-hidden">
-      <div className="relative aspect-square overflow-hidden bg-brand-50">
+      <div className="relative aspect-square overflow-hidden bg-white">
         {product.images[0] ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img

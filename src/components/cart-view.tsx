@@ -40,7 +40,7 @@ export default function CartView({
       <div className="space-y-4">
         {items.map((i) => (
           <div key={cartKey(i.productId, i.shade)} className="card flex items-center gap-4 p-3">
-            <Link href={`/${locale}/products/${i.slug}`} className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-brand-50">
+            <Link href={`/${locale}/products/${i.slug}`} className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-white">
               {i.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={i.image} alt="" className="h-full w-full object-cover" />
