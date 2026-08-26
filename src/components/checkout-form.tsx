@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { Dict, Locale } from "@/lib/i18n";
-import type { PaymentMethod, StoreSettings } from "@/lib/types";
+import { cartKey, type PaymentMethod, type StoreSettings } from "@/lib/types";
 import { useCart } from "./cart-context";
 import { shippingFor } from "./cart-view";
 
@@ -56,7 +56,10 @@ export default function CheckoutForm({
 
       if (method === "whatsapp" && data.whatsapp_number) {
         const lines = items
-          .map((i) => `• ${locale === "ar" ? i.name_ar : i.name_en} × ${i.qty} — ${fmt(i.price * i.qty)}`)
+          .map(
+            (i) =>
+              `• ${locale === "ar" ? i.name_ar : i.name_en}${i.shade ? ` (${t.shade}: ${i.shade})` : ""} × ${i.qty} — ${fmt(i.price * i.qty)}`
+          )
           .join("\n");
         const msg =
           locale === "ar"
@@ -140,9 +143,10 @@ export default function CheckoutForm({
         <div className="md:col-span-2">
           <div className="card sticky top-20 space-y-2 p-5">
             {items.map((i) => (
-              <div key={i.productId} className="flex justify-between text-sm">
+              <div key={cartKey(i.productId, i.shade)} className="flex justify-between text-sm">
                 <span className="truncate pe-2">
-                  {locale === "ar" ? i.name_ar : i.name_en} × {i.qty}
+                  {locale === "ar" ? i.name_ar : i.name_en}
+                  {i.shade ? ` (${i.shade})` : ""} × {i.qty}
                 </span>
                 <span className="shrink-0">{fmt(i.price * i.qty)}</span>
               </div>

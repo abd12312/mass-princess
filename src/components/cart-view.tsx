@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import type { Dict, Locale } from "@/lib/i18n";
-import type { StoreSettings } from "@/lib/types";
+import { cartKey, type StoreSettings } from "@/lib/types";
 import { useCart } from "./cart-context";
 
 export function shippingFor(subtotal: number, s: StoreSettings) {
@@ -39,7 +39,7 @@ export default function CartView({
       <h1 className="mb-6 text-3xl font-bold">{t.cart}</h1>
       <div className="space-y-4">
         {items.map((i) => (
-          <div key={i.productId} className="card flex items-center gap-4 p-3">
+          <div key={cartKey(i.productId, i.shade)} className="card flex items-center gap-4 p-3">
             <Link href={`/${locale}/products/${i.slug}`} className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-brand-50">
               {i.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -50,15 +50,20 @@ export default function CartView({
             </Link>
             <div className="min-w-0 flex-1">
               <p className="truncate font-semibold">{locale === "ar" ? i.name_ar : i.name_en}</p>
+              {i.shade && (
+                <p className="text-xs text-gray-500">
+                  {t.shade}: <span className="font-semibold text-gray-700">{i.shade}</span>
+                </p>
+              )}
               <p className="text-sm text-brand-700">{fmt(i.price)}</p>
-              <button onClick={() => remove(i.productId)} className="mt-1 text-xs text-red-500 hover:underline">
+              <button onClick={() => remove(cartKey(i.productId, i.shade))} className="mt-1 text-xs text-red-500 hover:underline">
                 {t.remove}
               </button>
             </div>
             <div className="flex items-center rounded-full border border-gray-300">
-              <button className="px-3 py-1.5 font-bold" onClick={() => setQty(i.productId, i.qty - 1)}>−</button>
+              <button className="px-3 py-1.5 font-bold" onClick={() => setQty(cartKey(i.productId, i.shade), i.qty - 1)}>−</button>
               <span className="w-7 text-center text-sm font-semibold">{i.qty}</span>
-              <button className="px-3 py-1.5 font-bold" onClick={() => setQty(i.productId, i.qty + 1)}>+</button>
+              <button className="px-3 py-1.5 font-bold" onClick={() => setQty(cartKey(i.productId, i.shade), i.qty + 1)}>+</button>
             </div>
             <p className="w-20 text-end font-bold">{fmt(i.price * i.qty)}</p>
           </div>

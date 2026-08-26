@@ -1,12 +1,12 @@
 "use client";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import type { CartItem } from "@/lib/types";
+import { cartKey, type CartItem } from "@/lib/types";
 
 type CartCtx = {
   items: CartItem[];
   add: (item: CartItem) => void;
-  remove: (productId: string) => void;
-  setQty: (productId: string, qty: number) => void;
+  remove: (key: string) => void;
+  setQty: (key: string, qty: number) => void;
   clear: () => void;
   count: number;
   subtotal: number;
@@ -14,6 +14,7 @@ type CartCtx = {
 
 const Ctx = createContext<CartCtx | null>(null);
 const KEY = "mp_cart";
+const keyOf = (i: CartItem) => cartKey(i.productId, i.shade);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -36,23 +37,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const add = (item: CartItem) =>
     setItems((prev) => {
-      const ex = prev.find((i) => i.productId === item.productId);
+      const k = keyOf(item);
+      const ex = prev.find((i) => keyOf(i) === k);
       if (ex)
         return prev.map((i) =>
-          i.productId === item.productId
-            ? { ...i, qty: Math.min(i.qty + item.qty, i.stock || 99) }
-            : i
+          keyOf(i) === k ? { ...i, qty: Math.min(i.qty + item.qty, i.stock || 99) } : i
         );
       return [...prev, item];
     });
 
-  const remove = (productId: string) =>
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+  const remove = (key: string) =>
+    setItems((prev) => prev.filter((i) => keyOf(i) !== key));
 
-  const setQty = (productId: string, qty: number) =>
+  const setQty = (key: string, qty: number) =>
     setItems((prev) =>
       prev.map((i) =>
-        i.productId === productId ? { ...i, qty: Math.max(1, Math.min(qty, i.stock || 99)) } : i
+        keyOf(i) === key ? { ...i, qty: Math.max(1, Math.min(qty, i.stock || 99)) } : i
       )
     );
 
