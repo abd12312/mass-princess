@@ -22,6 +22,7 @@ export type Product = {
   is_featured: boolean;
   is_active: boolean;
   created_at: string;
+  shade_images?: Record<string, string> | null;
   categories?: Category | null;
 };
 
