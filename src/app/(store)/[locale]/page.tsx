@@ -56,12 +56,12 @@ export default async function HomePage({ params }: { params: { locale: string } 
       {(cats ?? []).length > 0 && (
         <section className="mx-auto max-w-6xl px-4 py-10">
           <h2 className="mb-5 text-2xl font-bold">{t.categories}</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-4 md:overflow-visible md:pb-0">
             {(cats as Category[]).map((c) => (
               <Link
                 key={c.id}
                 href={`/${locale}/category/${c.slug}`}
-                className="card group overflow-hidden"
+                className="card group w-40 shrink-0 snap-start overflow-hidden sm:w-48 md:w-auto md:shrink"
               >
                 <div className="aspect-[4/3] overflow-hidden bg-white">
                   {c.image ? (
