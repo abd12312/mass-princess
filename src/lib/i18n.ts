@@ -54,6 +54,7 @@ const ar = {
   sale: "خصم",
   shade: "الدرجة",
   chooseShade: "اختاري الدرجة",
+  under3: "أقل من 3 دنانير",
 };
 
 const en: typeof ar = {
@@ -108,6 +109,7 @@ const en: typeof ar = {
   sale: "Sale",
   shade: "Shade",
   chooseShade: "Choose a shade",
+  under3: "Under 3 JD",
 };
 
 export const dictionaries = { ar, en };
