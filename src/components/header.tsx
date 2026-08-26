@@ -35,10 +35,8 @@ export default function Header({
             </svg>
           </button>
           <Link href={`/${locale}`} className="flex items-center gap-2">
-            <span className="text-xl font-extrabold tracking-tight text-brand-700">
-              {t.storeName}
-            </span>
-            <span className="hidden text-gold sm:inline">✦</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt={t.storeName} className="h-9 w-auto" />
           </Link>
         </div>
 
