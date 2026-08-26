@@ -52,6 +52,8 @@ const ar = {
   requiredField: "هذا الحقل مطلوب",
   cardComingSoon: "الدفع بالبطاقة سيتوفر قريبًا — سيتم تسجيل طلبك وسنتواصل معك لإتمام الدفع",
   sale: "خصم",
+  shade: "الدرجة",
+  chooseShade: "اختاري الدرجة",
 };
 
 const en: typeof ar = {
@@ -104,6 +106,8 @@ const en: typeof ar = {
   requiredField: "This field is required",
   cardComingSoon: "Card payment coming soon — your order will be recorded and we'll contact you to complete payment",
   sale: "Sale",
+  shade: "Shade",
+  chooseShade: "Choose a shade",
 };
 
 export const dictionaries = { ar, en };

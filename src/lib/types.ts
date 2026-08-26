@@ -65,7 +65,12 @@ export type CartItem = {
   image: string | null;
   qty: number;
   stock: number;
+  shade?: string | null;
 };
+
+export function cartKey(productId: string, shade?: string | null) {
+  return `${productId}|${shade ?? ""}`;
+}
 
 export type StoreSettings = {
   whatsapp_number: string;
