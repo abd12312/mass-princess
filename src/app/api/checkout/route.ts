@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     const ids = items.map((i) => i.productId);
     const { data: products, error: pErr } = await supabase
       .from("products")
-      .select("id, price, stock, name_ar, name_en, images")
+      .select("id, price, stock, name_ar, name_en, images, shade_images")
       .in("id", ids);
     if (pErr || !products) return NextResponse.json({ error: "products_fetch" }, { status: 500 });
 
@@ -64,7 +64,10 @@ export async function POST(req: Request) {
         name_en: shade ? `${p.name_en} — Shade ${shade}` : p.name_en,
         price: Number(p.price),
         qty,
-        image: (p.images as string[])[0] ?? null,
+        image:
+          (shade && (p.shade_images as Record<string, string> | null)?.[shade]) ||
+          (p.images as string[])[0] ||
+          null,
       });
     }
     if (orderItems.length === 0)
