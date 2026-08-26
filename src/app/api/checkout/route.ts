@@ -55,11 +55,13 @@ export async function POST(req: Request) {
       const p = map.get(i.productId);
       if (!p) continue;
       const qty = Math.max(1, Math.min(Number(i.qty) || 1, 99));
+      const shade =
+        typeof i.shade === "string" && i.shade.trim() ? i.shade.trim().slice(0, 60) : null;
       subtotal += Number(p.price) * qty;
       orderItems.push({
         product_id: p.id,
-        name_ar: p.name_ar,
-        name_en: p.name_en,
+        name_ar: shade ? `${p.name_ar} — درجة ${shade}` : p.name_ar,
+        name_en: shade ? `${p.name_en} — Shade ${shade}` : p.name_en,
         price: Number(p.price),
         qty,
         image: (p.images as string[])[0] ?? null,
