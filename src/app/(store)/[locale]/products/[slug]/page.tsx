@@ -4,6 +4,7 @@ import { getDict, isLocale, defaultLocale, type Locale } from "@/lib/i18n";
 import type { Product } from "@/lib/types";
 import ProductCard, { formatPrice } from "@/components/product-card";
 import AddToCart from "@/components/add-to-cart";
+import { parseShades, stripShadesLine } from "@/lib/shades";
 
 export const revalidate = 60;
 
@@ -33,7 +34,12 @@ export default async function ProductPage({
     .limit(4);
 
   const name = locale === "ar" ? product.name_ar : product.name_en;
-  const desc = locale === "ar" ? product.description_ar : product.description_en;
+  const rawDesc = locale === "ar" ? product.description_ar : product.description_en;
+  const primaryShades = parseShades(rawDesc);
+  const shades = primaryShades.length > 0
+    ? primaryShades
+    : parseShades(locale === "ar" ? product.description_en : product.description_ar);
+  const desc = stripShadesLine(rawDesc);
   const onSale =
     product.compare_at_price != null && Number(product.compare_at_price) > Number(product.price);
 
@@ -55,7 +61,7 @@ export default async function ProductPage({
           </div>
           {desc && <p className="mt-4 whitespace-pre-line leading-relaxed text-gray-600">{desc}</p>}
           <div className="mt-6">
-            <AddToCart product={product} locale={locale} t={t} />
+            <AddToCart product={product} locale={locale} t={t} shades={shades} />
           </div>
         </div>
       </div>
